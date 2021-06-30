@@ -21,7 +21,6 @@ export default function Outfit() {
           }
         )
           .then( (res) => {
-            console.log(res.data)
               setList(res.data)
             }
           )
@@ -62,8 +61,8 @@ export default function Outfit() {
       <Grid container spacing={4}>
         <Grid item xs={12}>
           <MUIDataTable
-            title="Lista items"
-           // data={outfitList}
+            title="Lista outfit"
+            data={outfitList}
             columns={columns}
             options={options}
           />

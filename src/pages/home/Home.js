@@ -13,7 +13,7 @@ export default function Home() {
   const [state, setState] = useState([])
   const [outfitList, changeCurrentOutfit] = useState([])
 
-  const textInput = useRef(null)
+  const textInput = useRef("")
 
   useEffect(() => {
     Auth.currentSession()
@@ -26,7 +26,6 @@ export default function Home() {
           }
         )
           .then( (res) => {
-            console.log(res.data)
               setState(res.data)
             }
           )
@@ -104,7 +103,6 @@ export default function Home() {
           return (
             <button onClick={() => {
               let item = state[tableMeta.rowIndex]
-              console.log(outfitList)
               outfitList.push(item)
               changeCurrentOutfit(outfitList)
 
@@ -131,23 +129,23 @@ export default function Home() {
     }
   ];
 
-  const uploadOutfit = useCallback(() => {
+  const uploadOutfit = useCallback((name) => () => {
     let itemIds = []
+
+
     outfitList.forEach(item =>
       itemIds.push(item.name)
     );
     Auth.currentSession()
       .then( res => {
         let jwt = res.getIdToken().getJwtToken()
-        console.log(jwt)
 
         Axios.post(
           config.adminController.uploadOutfit,
-          {name: textInput.current.value, clothes: itemIds },
+          {name: name, clothes: itemIds },
           { headers: {Authorization: jwt}}
         )
           .then( (res) => {
-              console.log(res)
               console.log(res.data)
             }
           )
@@ -194,8 +192,8 @@ export default function Home() {
       <form><label>Nome:
       </label>
         <input ref={textInput}/></form>
-      <Button type="button" disabled={outfitList.length === 0 } onClick={uploadOutfit}>Carica outfit</Button>
-      <Button disabled={outfitList.length === 0} onClick={deleteOutfit}>Elimina outfit</Button>
+      <Button type="button" disabled={outfitList.length === 0 } onClick={uploadOutfit(textInput.current['value'])}>Carica outfit</Button>
+      <Button  onClick={console.log(textInput.current['value'])}>Elimina outfit</Button>
     </>
   );
 }
