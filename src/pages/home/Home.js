@@ -16,27 +16,28 @@ export default function Home() {
   const textInput = useRef("")
 
   useEffect(() => {
-    Auth.currentSession()
-      .then( res => {
-        let jwt = res.getIdToken().getJwtToken()
-        Axios.get(
-          config.adminController.list,
-          {
-            headers: {Authorization: jwt}
-          }
-        )
-          .then( (res) => {
-              setState(res.data)
+      Auth.currentSession()
+        .then( res => {
+          let jwt = res.getIdToken().getJwtToken()
+          Axios.get(
+            config.adminController.list,
+            {
+              headers: {Authorization: jwt}
             }
           )
-          .catch( (err) => {
-              console.log("ERRORE")
-            }
-          )
-      })
-      .catch( err => {
-        console.log(err)
-      })
+            .then( (res) => {
+                setState(res.data)
+              }
+            )
+            .catch( (err) => {
+                console.log("ERRORE")
+              }
+            )
+        })
+        .catch( err => {
+          console.log(err)
+        })
+
   })
 
   const options = {
